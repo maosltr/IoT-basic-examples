@@ -1,4 +1,4 @@
-# cyclonedds-examples
+cyclonedds-examples
 ==========
 
 Description
