@@ -1,5 +1,5 @@
 
-cyclonedds-examples
+cyclonedds examples implemented in modern C++
 ==========
 
 Description
