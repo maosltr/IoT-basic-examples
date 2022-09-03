@@ -1,5 +1,4 @@
 # cyclonedds-examples
-HelloWorld
 ==========
 
 Description
