@@ -15,6 +15,7 @@ module HelloWorldData
   {
     long userID;
     string message;
+    uint32 counter;
   };
   #pragma keylist Msg userID
 };

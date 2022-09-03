@@ -13,17 +13,21 @@
 #include <iostream>
 #include <chrono>
 #include <thread>
-
+#include <fstream>
+#include <string>
+#include <algorithm>
 /* Include the C++ DDS API. */
 #include "dds/dds.hpp"
 
 /* Include data type and specific traits to be used with the C++ DDS API. */
-#include "data.hpp"
+#include "Data.hpp"
 
 using namespace org::eclipse::cyclonedds;
 
-int main() {
-    try {
+int main()
+{
+    try
+    {
         std::cout << "=== [Publisher] Create writer." << std::endl;
 
         /* First, a domain participant is needed.
@@ -45,30 +49,41 @@ int main() {
          * really recommended to do a wait in a polling loop, however.
          * Please take a look at Listeners and WaitSets for much better
          * solutions, albeit somewhat more elaborate ones. */
-        std::cout << "=== [Publisher] Waiting for subscriber." << std::endl;
-        while (writer.publication_matched_status().current_count() == 0) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(20));
-        }
 
-        /* Create a message to write. */
-        HelloWorldData::Msg msg(1, "Hello World");
+        // pick a random message to publish
 
-        /* Write the message. */
-        std::cout << "=== [Publisher] Write sample." << std::endl;
-        writer.write(msg);
+        std::string message;
+        std::fstream myFile;
+        myFile.open("../data/words.txt");
 
-        /* With a normal configuration (see dds::pub::qos::DataWriterQos
-         * for various different writer configurations), deleting a writer will
-         * dispose all its related message.
-         * Wait for the subscriber to have stopped to be sure it received the
-         * message. Again, not normally necessary and not recommended to do
-         * this in a polling loop. */
-        std::cout << "=== [Publisher] Waiting for sample to be accepted." << std::endl;
-        while (writer.publication_matched_status().current_count() > 0) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(50));
+        int counter = 0;
+        bool publish = true;
+        while (publish && counter < 30)
+        {
+            int randomline = 1 + (rand() % 1000);
+            int linenumber = 0;
+
+            while (linenumber != randomline)
+            {
+                getline(myFile, message);
+
+                linenumber++;
+            }
+            message.erase(std::remove_if(message.begin(), message.end(), ::isspace), message.end());
+
+            /* Create a message to write. */
+            HelloWorldData::Msg msg(1, message, counter);
+
+            /* Write the message. */
+            std::cout << "=== [Publisher] Write sample " << counter << " (1, " << message << ")" << std::endl;
+            writer.write(msg);
+            counter++;
+            std::this_thread::sleep_for(std::chrono::milliseconds(1000));
         }
     }
-    catch (const dds::core::Exception& e) {
+
+    catch (const dds::core::Exception &e)
+    {
         std::cerr << "=== [Publisher] Exception: " << e.what() << std::endl;
         return EXIT_FAILURE;
     }

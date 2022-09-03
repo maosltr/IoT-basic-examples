@@ -18,12 +18,14 @@
 #include "dds/dds.hpp"
 
 /* Include data type and specific traits to be used with the C++ DDS API. */
-#include "data.hpp"
+#include "Data.hpp"
 
 using namespace org::eclipse::cyclonedds;
 
-int main() {
-    try {
+int main()
+{
+    try
+    {
         std::cout << "=== [Subscriber] Create reader." << std::endl;
 
         /* First, a domain participant is needed.
@@ -46,7 +48,9 @@ int main() {
          * solutions, albeit somewhat more elaborate ones. */
         std::cout << "=== [Subscriber] Wait for message." << std::endl;
         bool poll = true;
-        while (poll) {
+        int counter = 0;
+        while (poll && counter < 29)
+        {
             /* For this example, the reader will return a set of messages (aka
              * Samples). There are other ways of getting samples from reader.
              * See the various read() and take() functions that are present. */
@@ -54,40 +58,24 @@ int main() {
 
             /* Try taking samples from the reader. */
             samples = reader.take();
-
-            /* Are samples read? */
-            if (samples.length() > 0) {
-                /* Use an iterator to run over the set of samples. */
-                dds::sub::LoanedSamples<HelloWorldData::Msg>::const_iterator sample_iter;
-                for (sample_iter = samples.begin();
-                     sample_iter < samples.end();
-                     ++sample_iter) {
-                    /* Get the message and sample information. */
-                    const HelloWorldData::Msg& msg = sample_iter->data();
-                    const dds::sub::SampleInfo& info = sample_iter->info();
-
-                    /* Sometimes a sample is read, only to indicate a data
-                     * state change (which can be found in the info). If
-                     * that's the case, only the key value of the sample
-                     * is set. The other data parts are not.
-                     * Check if this sample has valid data. */
-                    if (info.valid()) {
-                        std::cout << "=== [Subscriber] Message received:" << std::endl;
-                        std::cout << "    userID  : " << msg.userID() << std::endl;
-                        std::cout << "    Message : \"" << msg.message() << "\"" << std::endl;
-
-                        /* Only 1 message is expected in this example. */
-                        poll = false;
-                    }
-                }
-            } else {
-                std::this_thread::sleep_for(std::chrono::milliseconds(20));
+            dds::sub::LoanedSamples<HelloWorldData::Msg>::const_iterator it;
+            for (it = samples.begin(); it != samples.end(); ++it)
+            {
+                const HelloWorldData::Msg &msg = it->data();
+                // Use sample data and meta information.
+                std::cout << "=== [Subscriber] read sample " << msg.counter()
+                          << " (" << msg.userID() << ", " + msg.message() << ")" << std::endl;
+                counter = msg.counter();
             }
-        }
-    } catch (const dds::core::Exception& e) {
+                }
+    }
+    catch (const dds::core::Exception &e)
+    {
         std::cerr << "=== [Subscriber] DDS exception: " << e.what() << std::endl;
         return EXIT_FAILURE;
-    } catch (const std::exception& e) {
+    }
+    catch (const std::exception &e)
+    {
         std::cerr << "=== [Subscriber] C++ exception: " << e.what() << std::endl;
         return EXIT_FAILURE;
     }
