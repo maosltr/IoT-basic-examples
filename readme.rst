@@ -10,7 +10,7 @@ A bunch of examples of data sharing concepts in real-time systems using cycloneD
 Examples backlog
 ****************
 
-- Subscribing to data in a polling mode (done)
+- Subscribing to data in a polling mode (👍)
 - Subscribing to data in a listening mode (in progress ...)
 - Waitsets (in progress ...)
 - Implemenation of QoS 
