@@ -17,3 +17,8 @@ Examples backlog
 - Implemenation of QoS (in progress ... 👨‍💻)
 - Network configuration (in progress ... 👨‍💻)
 - Sharing data over docker containers (in progress ... 👨‍💻)
+
+Relevant documentation & links
+****************
+https://cyclonedds.io/
+https://github.com/eclipse-cyclonedds
