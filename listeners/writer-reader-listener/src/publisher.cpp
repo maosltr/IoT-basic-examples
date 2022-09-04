@@ -44,8 +44,8 @@ int main()
 
         /* a Mask is needed for the datawriter listener */
         dds::core::status::StatusMask mask;
-        // mask << dds::core::status::StatusMask::publication_matched();
-        mask << dds::core::status::StatusMask::all();
+        mask << dds::core::status::StatusMask::publication_matched();
+        //mask << dds::core::status::StatusMask::all();
 
         /* create a listener */
         DwListener dwlistener;
