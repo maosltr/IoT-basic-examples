@@ -17,6 +17,9 @@ Examples backlog
 - Implemenation of QoS (in progress ... 👨‍💻)
 - Network configuration (in progress ... 👨‍💻)
 - Sharing data over docker containers (in progress ... 👨‍💻)
+- Integrating different cloud services in a system
+- Setting up and orchestrating an IoT system made of containerized applications 
+- 
 
 Relevant documentation & links
 ****************
