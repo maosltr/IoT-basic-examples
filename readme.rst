@@ -20,5 +20,5 @@ Examples backlog
 
 Relevant documentation & links
 ****************
-https://cyclonedds.io/
-https://github.com/eclipse-cyclonedds
+- https://cyclonedds.io/
+- https://github.com/eclipse-cyclonedds
