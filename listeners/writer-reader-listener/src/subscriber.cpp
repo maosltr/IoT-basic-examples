@@ -20,6 +20,8 @@
 /* Include data type and specific traits to be used with the C++ DDS API. */
 #include "Data.hpp"
 
+#include "listener.hpp"
+
 using namespace org::eclipse::cyclonedds;
 
 int main()
@@ -33,7 +35,7 @@ int main()
         dds::domain::DomainParticipant participant(domain::default_id());
 
         /* To subscribe to something, a topic is needed. */
-        dds::topic::Topic<HelloWorldData::Msg> topic(participant, "HelloWorldData_Msg");
+        dds::topic::Topic<HelloWorldData::Msg> topic(participant, "random_world");
 
         /* A reader also needs a subscriber. */
         dds::sub::Subscriber subscriber(participant);
@@ -48,9 +50,10 @@ int main()
          * solutions, albeit somewhat more elaborate ones. */
         std::cout << "=== [Subscriber] Wait for message." << std::endl;
         bool poll = true;
-        int counter = 0;
-        while (poll && counter < 29)
+        int polling_counter = 0;
+        while (poll && polling_counter < 5)
         {
+
             /* For this example, the reader will return a set of messages (aka
              * Samples). There are other ways of getting samples from reader.
              * See the various read() and take() functions that are present. */
@@ -65,9 +68,9 @@ int main()
                 // Use sample data and meta information.
                 std::cout << "=== [Subscriber] read sample " << msg.counter()
                           << " (" << msg.userID() << ", " + msg.message() << ")" << std::endl;
-                counter = msg.counter();
+                polling_counter++;
             }
-                }
+        }
     }
     catch (const dds::core::Exception &e)
     {

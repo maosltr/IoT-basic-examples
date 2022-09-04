@@ -22,6 +22,8 @@
 /* Include data type and specific traits to be used with the C++ DDS API. */
 #include "Data.hpp"
 
+#include "listener.hpp"
+
 using namespace org::eclipse::cyclonedds;
 
 int main()
@@ -35,13 +37,21 @@ int main()
         dds::domain::DomainParticipant participant(domain::default_id());
 
         /* To publish something, a topic is needed. */
-        dds::topic::Topic<HelloWorldData::Msg> topic(participant, "HelloWorldData_Msg");
+        dds::topic::Topic<HelloWorldData::Msg> topic(participant, "random_world");
 
         /* A writer also needs a publisher. */
         dds::pub::Publisher publisher(participant);
 
+        /* a Mask is needed for the datawriter listener */
+        dds::core::status::StatusMask mask;
+        // mask << dds::core::status::StatusMask::publication_matched();
+        mask << dds::core::status::StatusMask::all();
+
+        /* create a listener */
+        DwListener dwlistener;
+
         /* Now, the writer can be created to publish a HelloWorld message. */
-        dds::pub::DataWriter<HelloWorldData::Msg> writer(publisher, topic);
+        dds::pub::DataWriter<HelloWorldData::Msg> writer(publisher, topic, publisher.default_datawriter_qos(), &dwlistener, mask);
 
         /* For this example, we'd like to have a subscriber to actually read
          * our message. This is not always necessary. Also, the way it is
@@ -74,10 +84,14 @@ int main()
             /* Create a message to write. */
             HelloWorldData::Msg msg(1, message, counter);
 
-            /* Write the message. */
-            std::cout << "=== [Publisher] Write sample " << counter << " (1, " << message << ")" << std::endl;
-            writer.write(msg);
-            counter++;
+            /* Write the message if publication matched. */
+
+            if (dwlistener.pubmatched)
+            {
+                std::cout << "=== [Publisher] Write sample " << counter << " (1, " << message << ")" << std::endl;
+                writer.write(msg);
+                counter++;
+            }
             std::this_thread::sleep_for(std::chrono::milliseconds(1000));
         }
     }
