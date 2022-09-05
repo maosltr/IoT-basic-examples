@@ -25,3 +25,4 @@ Relevant documentation & links
 ****************
 - https://cyclonedds.io/
 - https://github.com/eclipse-cyclonedds
+https://rtidds.wordpress.com/2013/03/03/dds-programming-using-modern-c/
