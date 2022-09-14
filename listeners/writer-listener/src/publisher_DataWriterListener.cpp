@@ -18,6 +18,7 @@
 #include <algorithm>
 /* Include the C++ DDS API. */
 #include "dds/dds.hpp"
+#include "myFunctions.hpp"
 
 /* Include data type and specific traits to be used with the C++ DDS API. */
 #include "Data.hpp"
@@ -60,32 +61,17 @@ int main()
          * Please take a look at Listeners and WaitSets for much better
          * solutions, albeit somewhat more elaborate ones. */
 
-        // pick a random message to publish
-
-        std::string message;
-        std::fstream myFile;
-        myFile.open("../data/words.txt");
-
         int counter = 0;
         bool publish = true;
         while (publish && counter < 30)
         {
-            int randomline = 1 + (rand() % 1000);
-            int linenumber = 0;
-
-            while (linenumber != randomline)
-            {
-                getline(myFile, message);
-
-                linenumber++;
-            }
-            message.erase(std::remove_if(message.begin(), message.end(), ::isspace), message.end());
+            // pick a random message to publish
+            std::string message = random_message("../data/words.txt");
 
             /* Create a message to write. */
             HelloWorldData::Msg msg(1, message, counter);
 
             /* Write the message if publication matched. */
-
             if (dwlistener.pubmatched)
             {
                 std::cout << "=== [Publisher] Write sample " << counter << " (1, " << message << ")" << std::endl;
