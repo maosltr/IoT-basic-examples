@@ -51,12 +51,41 @@ public:
     }
 };
 
-// class SubListener : : public virtual dds::sub::NoOpSubscriberListener
-// {
+// publisher listener for any topic (source: include\ddscxx\dds\pub\PublisherListener.hpp)
+class PubListener :
+                  public virtual dds::pub::PublisherListener
+   {
+   public:
+       virtual void on_offered_deadline_missed (
+           dds::pub::AnyDataWriter& writer,
+           const dds::core::status::OfferedDeadlineMissedStatus& status)
+       {
+           std::cout << "on_offered_deadline_missed" << std::endl;
+       }
+  
+       virtual void on_offered_incompatible_qos (
+           dds::pub::AnyDataWriter& writer,
+           const dds::core::status::OfferedIncompatibleQosStatus& status)
+       {
+           std::cout << "on_offered_incompatible_qos" << std::endl;
+       }
+  
+       virtual void on_liveliness_lost (
+           dds::pub::AnyDataWriter& writer,
+           const dds::core::status::LivelinessLostStatus& status)
+       {
+           std::cout << "on_liveliness_lost" << std::endl;
+       }
+  
+       virtual void on_publication_matched (
+           dds::pub::AnyDataWriter& writer,
+           const dds::core::status::PublicationMatchedStatus& status)
+       {
+           std::cout << "on_publication_matched" << std::endl;
+       }
+   };
 
-// }
-
-// domain participant listener for any topic
+// domain participant listener for any topic (source: include\ddscxx\dds\domain\DomainParticipantListener.hpp)
 class DpListener : public virtual dds::domain::DomainParticipantListener
 {
 public:
