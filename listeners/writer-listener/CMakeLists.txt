@@ -18,25 +18,29 @@ endif()
 
 idlcxx_generate(TARGET data FILES data/Data.idl WARNINGS no-implicit-extensibility)
 
-#add_executable(publisher_Dwl src/publisher_DataWriterListener.cpp)
+add_executable(publisher_Dwl src/publisher_DataWriterListener.cpp)
 add_executable(publisher_Dpl src/publisher_DomainParticipantListener.cpp)
+add_executable(publisher_Pl src/publisher_PublisherListener.cpp)
 add_executable(subscriber src/subscriber.cpp)
 
 # Link both executables to idl data type library and ddscxx.
-#target_link_libraries(publisher_Dwl CycloneDDS-CXX::ddscxx data)
+target_link_libraries(publisher_Dwl CycloneDDS-CXX::ddscxx data)
 target_link_libraries(publisher_Dpl CycloneDDS-CXX::ddscxx data)
+target_link_libraries(publisher_Pl CycloneDDS-CXX::ddscxx data)
 target_link_libraries(subscriber CycloneDDS-CXX::ddscxx data)
 
 # Disable the static analyzer in GCC to avoid crashing the GNU C++ compiler
 # on Azure Pipelines
 if(DEFINED ENV{SYSTEM_TEAMFOUNDATIONSERVERURI})
   if(CMAKE_C_COMPILER_ID STREQUAL "GNU" AND ANALYZER STREQUAL "on")
-    #target_compile_options(publisher_Dwl PRIVATE -fno-analyzer)
+    target_compile_options(publisher_Dwl PRIVATE -fno-analyzer)
     target_compile_options(publisher_Dpl PRIVATE -fno-analyzer)
+    target_compile_options(publisher_Pl PRIVATE -fno-analyzer)
     target_compile_options(subscriber PRIVATE -fno-analyzer)
   endif()
 endif()
 
-#set_property(TARGET publisher_Dwl PROPERTY CXX_STANDARD ${cyclonedds_cpp_std_to_use})
+set_property(TARGET publisher_Dwl PROPERTY CXX_STANDARD ${cyclonedds_cpp_std_to_use})
 set_property(TARGET publisher_Dpl PROPERTY CXX_STANDARD ${cyclonedds_cpp_std_to_use})
+set_property(TARGET publisher_Pl PROPERTY CXX_STANDARD ${cyclonedds_cpp_std_to_use})
 set_property(TARGET subscriber PROPERTY CXX_STANDARD ${cyclonedds_cpp_std_to_use})

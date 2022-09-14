@@ -33,25 +33,24 @@ int main()
     {
         std::cout << "=== [Publisher] Create writer." << std::endl;
 
-        /* create a domain participant listener */
-        DpListener dplistener;
-
-        /* a Mask is needed for the domain participant listener */
-        dds::core::status::StatusMask mask;
-        mask << dds::core::status::StatusMask::publication_matched();
+        
 
         /* First, a domain participant is needed.
          * Create one on the default domain. */
-        dds::domain::DomainParticipant participant(domain::default_id(),
-                                             dds::domain::DomainParticipant::default_participant_qos(),
-                                             &dplistener,
-                                             mask);
+        dds::domain::DomainParticipant participant(domain::default_id());
 
         /* To publish something, a topic is needed. */
         dds::topic::Topic<HelloWorldData::Msg> topic(participant, "random_world");
 
+       /* create a publisher listener */
+        PubListener publistener;
+
+        /* a Mask is needed for the domain participant listener */
+        dds::core::status::StatusMask mask;
+        mask << dds::core::status::StatusMask::publication_matched();
+        
         /* A writer also needs a publisher. */
-        dds::pub::Publisher publisher(participant);
+        dds::pub::Publisher publisher(participant, participant.default_publisher_qos(), &publistener, mask);
 
         /* Now, the writer can be created to publish a HelloWorld message. */
         dds::pub::DataWriter<HelloWorldData::Msg> writer(publisher, topic);
@@ -74,7 +73,7 @@ int main()
             HelloWorldData::Msg msg(1, message, counter);
 
             /* Write the message if publication matched. */
-            if (dplistener.pubmatched)
+            if (publistener.pubmatched)
             {
                 std::cout << "=== [Publisher] Write sample " << counter << " (1, " << message << ")" << std::endl;
                 writer.write(msg);
