@@ -17,8 +17,12 @@ Examples backlog
 - Implemenation of QoS (in progress ... 👨‍💻)
 - Network configuration (in progress ... 👨‍💻)
 - Sharing data over docker containers (in progress ... 👨‍💻)
+- Integrating different cloud services in a system
+- Setting up and orchestrating an IoT system made of containerized applications 
+- 
 
 Relevant documentation & links
 ****************
 - https://cyclonedds.io/
 - https://github.com/eclipse-cyclonedds
+https://rtidds.wordpress.com/2013/03/03/dds-programming-using-modern-c/
