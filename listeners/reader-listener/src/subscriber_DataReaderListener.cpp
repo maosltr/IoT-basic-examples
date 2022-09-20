@@ -61,7 +61,7 @@ int main()
         std::cout << "=== [Subscriber] Wait for message." << std::endl;
 
         int topics_counter = 0;
-        while (topics_counter < 30)
+        while (topics_counter < 100)
         {
 
             if (drlistener.submatched) // && drlistener.data_available)

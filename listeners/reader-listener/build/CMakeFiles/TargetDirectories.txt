@@ -1,7 +1,0 @@
-/mnt/c/Users/chouhou/Documents/Professional/cyclonedds/Trainings/cyclonedds-examples/listeners/reader-listener/build/CMakeFiles/data_generate.dir
-/mnt/c/Users/chouhou/Documents/Professional/cyclonedds/Trainings/cyclonedds-examples/listeners/reader-listener/build/CMakeFiles/subscriber_Drl.dir
-/mnt/c/Users/chouhou/Documents/Professional/cyclonedds/Trainings/cyclonedds-examples/listeners/reader-listener/build/CMakeFiles/subscriber_Dpl.dir
-/mnt/c/Users/chouhou/Documents/Professional/cyclonedds/Trainings/cyclonedds-examples/listeners/reader-listener/build/CMakeFiles/subscriber_Pl.dir
-/mnt/c/Users/chouhou/Documents/Professional/cyclonedds/Trainings/cyclonedds-examples/listeners/reader-listener/build/CMakeFiles/publisher.dir
-/mnt/c/Users/chouhou/Documents/Professional/cyclonedds/Trainings/cyclonedds-examples/listeners/reader-listener/build/CMakeFiles/edit_cache.dir
-/mnt/c/Users/chouhou/Documents/Professional/cyclonedds/Trainings/cyclonedds-examples/listeners/reader-listener/build/CMakeFiles/rebuild_cache.dir

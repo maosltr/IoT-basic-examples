@@ -48,20 +48,21 @@ int main()
         myFile.open("../data/words.txt");
 
         int counter = 1;
+        const int userID = 1;
         bool publish = true;
-        while (publish && counter != 6)
+        while (publish && counter != 20)
         {
             // pick a random message to publish
             std::string message = random_message("../data/words.txt");
 
             /* Create a message to write. */
-            HelloWorldData::Msg msg(1, message, counter);
+            HelloWorldData::Msg msg(userID, message, counter);
 
             /* Write the message. */
-            std::cout << "=== [Publisher] Write sample " << counter << " (1, " << message << ")" << std::endl;
+            std::cout << "=== [Publisher] Write sample " << counter << " (" << userID << ", " << message << ")" << std::endl;
             writer.write(msg);
             counter++;
-            std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+            std::this_thread::sleep_for(std::chrono::milliseconds(3000));
         }
     }
 

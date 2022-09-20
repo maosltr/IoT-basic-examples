@@ -1,1 +1,0 @@
-/usr/bin/c++ -g CMakeFiles/subscriber_Pl.dir/src/subscriber_SubscriberListener.cpp.o CMakeFiles/subscriber_Pl.dir/Data.cpp.o -o subscriber_Pl  -Wl,-rpath,/usr/local/lib /usr/local/lib/libddscxx.so.0.10.0 /usr/local/lib/libddsc.so.0.10.0 
