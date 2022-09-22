@@ -322,8 +322,10 @@ public:
         std::cout << "=== [Subscriber] on_subscription_matched" << std::endl;
         const std::string topic_name = reader.topic_description().name();
  
-        std::cout << "=== [Subscriber - subsctiber listener] " << status.current_count() << " publisher(s) for the topic '" << topic_name << "'" << std::endl;
-
+        std::cout << "=== [Subscriber - subscriber listener] " << status.current_count() << " publisher(s) for the topic '" << topic_name << "'" << std::endl;
+        std::thread::id this_id = std::this_thread::get_id(); 
+        std::cout << "=== [Subscriber - subscriber listener] " << this_id << std::endl;
+       
         // source: \include\ddscxx\dds\core\status\detail\TStatusImpl.hpp
         if (status.current_count() != 0)
         {

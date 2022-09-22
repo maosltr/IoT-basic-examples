@@ -19,8 +19,9 @@
 
 /* Include data type and specific traits to be used with the C++ DDS API. */
 #include "Data.hpp"
-
 #include "listener.hpp"
+
+
 
 using namespace org::eclipse::cyclonedds;
 

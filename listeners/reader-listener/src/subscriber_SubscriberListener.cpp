@@ -74,7 +74,7 @@ int main()
 
                 /* Try taking samples from the reader. */
                 samples = reader.take();
-                //sublistener.data_available = false;
+                // sublistener.data_available = false;
 
                 dds::sub::LoanedSamples<HelloWorldData::Msg>::const_iterator it;
                 for (it = samples.begin(); it != samples.end(); ++it)
@@ -89,6 +89,10 @@ int main()
 
                         std::cout << "=== [Subscriber] read sample " << msg.counter()
                                   << " (" << msg.userID() << ", " + msg.message() << ")" << std::endl;
+                        std::thread::id this_id = std::this_thread::get_id();
+
+                        std::cout << "=== [Subscriber] " << this_id << std::endl;
+
                         topics_counter++;
                     }
                 }

@@ -10,6 +10,7 @@
 
 /* Include data type and specific traits to be used with the C++ DDS API. */
 #include "Data.hpp"
+#include "init.cpp"
 
 #include "myFunctions.hpp"
 
@@ -20,26 +21,8 @@ int main()
     try
     {
         std::cout << "=== [Publisher] Create writer." << std::endl;
-
-        /* First, a domain participant is needed.
-         * Create one on the default domain. */
-        dds::domain::DomainParticipant participant(domain::default_id());
-
-        /* To publish something, a topic is needed. */
-        dds::topic::Topic<HelloWorldData::Msg> topic(participant, "random_world");
-
-        /* A writer also needs a publisher. */
-        dds::pub::Publisher publisher(participant);
-
-        /* Now, the writer can be created to publish a HelloWorld message. */
-        dds::pub::DataWriter<HelloWorldData::Msg> writer(publisher, topic);
-
-        /* For this example, we'd like to have a subscriber to actually read
-         * our message. This is not always necessary. Also, the way it is
-         * done here is just to illustrate the easiest way to do so. It isn't
-         * really recommended to do a wait in a polling loop, however.
-         * Please take a look at Listeners and WaitSets for much better
-         * solutions, albeit somewhat more elaborate ones. */
+        dds::pub::DataWriter<HelloWorldData::Msg>  writer =  init_publisher();
+      
 
         // pick a random message to publish
 
@@ -61,8 +44,11 @@ int main()
             /* Write the message. */
             std::cout << "=== [Publisher] Write sample " << counter << " (" << userID << ", " << message << ")" << std::endl;
             writer.write(msg);
+            std::thread::id this_id = std::this_thread::get_id(); 
+            std::cout << "=== [Publisher] " << this_id << std::endl;
+
             counter++;
-            std::this_thread::sleep_for(std::chrono::milliseconds(2100));
+            std::this_thread::sleep_for(std::chrono::milliseconds(2500));
         }
     }
 
