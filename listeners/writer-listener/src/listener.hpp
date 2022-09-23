@@ -1,8 +1,6 @@
 #include "dds/dds.hpp"
 
-// flags
-
-// data writer listener for a specific topic
+// data writer listener for a specific topic (source: \include\ddscxx\dds\pub\DataWriterListener.hpp)
 class DwListener : public virtual dds::pub::DataWriterListener<HelloWorldData::Msg>
 {
 public:
@@ -51,12 +49,56 @@ public:
     }
 };
 
-// class SubListener : : public virtual dds::sub::NoOpSubscriberListener
-// {
+// publisher listener for any topic (source: include\ddscxx\dds\pub\PublisherListener.hpp)
+class PubListener :
+                  public virtual dds::pub::PublisherListener
+   {
+   public:
+   bool pubmatched = false;
+       virtual void on_offered_deadline_missed (
+           dds::pub::AnyDataWriter& writer,
+           const dds::core::status::OfferedDeadlineMissedStatus& status)
+       {
+           std::cout << "on_offered_deadline_missed" << std::endl;
+       }
+  
+       virtual void on_offered_incompatible_qos (
+           dds::pub::AnyDataWriter& writer,
+           const dds::core::status::OfferedIncompatibleQosStatus& status)
+       {
+           std::cout << "on_offered_incompatible_qos" << std::endl;
+       }
+  
+       virtual void on_liveliness_lost (
+           dds::pub::AnyDataWriter& writer,
+           const dds::core::status::LivelinessLostStatus& status)
+       {
+           std::cout << "on_liveliness_lost" << std::endl;
+       }
+  
+       virtual void on_publication_matched (
+           dds::pub::AnyDataWriter& writer,
+           const dds::core::status::PublicationMatchedStatus& status)
+       {
+           std::cout << "=== [Publisher] on_publication_matched" << std::endl;
+        const std::string topic_name = writer.topic_description().name();
 
-// }
+        if (status.total_count_change() == 1)
+        {
 
-// domain participant listener for any topic
+            std::cout << "=== [Publisher - publisher listener] subscriber joined for the topic '" << topic_name << "'" << std::endl;
+            pubmatched = true;
+        }
+        else if (status.total_count_change() == 0)
+        {
+
+            std::cout << "=== [Publisher - publisher listener] subscriber left " << std::endl;
+            pubmatched = false;
+        }
+       }
+   };
+
+// domain participant listener for any topic (source: include\ddscxx\dds\domain\DomainParticipantListener.hpp)
 class DpListener : public virtual dds::domain::DomainParticipantListener
 {
 public:

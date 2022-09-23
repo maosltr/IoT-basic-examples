@@ -42,13 +42,16 @@ int main()
 
         /* First, a domain participant is needed.
          * Create one on the default domain. */
-        dds::domain::DomainParticipant participant(domain::default_id());
+        dds::domain::DomainParticipant participant(domain::default_id(),
+                                             dds::domain::DomainParticipant::default_participant_qos(),
+                                             &dplistener,
+                                             mask);
 
         /* To publish something, a topic is needed. */
         dds::topic::Topic<HelloWorldData::Msg> topic(participant, "random_world");
 
         /* A writer also needs a publisher. */
-        dds::pub::Publisher publisher(participant, participant.default_publisher_qos(), &dplistener, mask);
+        dds::pub::Publisher publisher(participant);
 
         /* Now, the writer can be created to publish a HelloWorld message. */
         dds::pub::DataWriter<HelloWorldData::Msg> writer(publisher, topic);
