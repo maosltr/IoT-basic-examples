@@ -3,6 +3,7 @@
 #include "listener.hpp"
 using namespace org::eclipse::cyclonedds;
 
+
 // init publisher
 dds::pub::DataWriter<HelloWorldData::Msg> init_publisher()
 {
@@ -15,3 +16,5 @@ dds::pub::DataWriter<HelloWorldData::Msg> init_publisher()
 
     return writer;
 };
+
+

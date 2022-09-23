@@ -325,6 +325,7 @@ public:
         std::cout << "=== [Subscriber - subscriber listener] " << status.current_count() << " publisher(s) for the topic '" << topic_name << "'" << std::endl;
         std::thread::id this_id = std::this_thread::get_id(); 
         std::cout << "=== [Subscriber - subscriber listener] " << this_id << std::endl;
+        std::cout << "=== [Subscriber - subscriber listener] " << getpid() << std::endl;
        
         // source: \include\ddscxx\dds\core\status\detail\TStatusImpl.hpp
         if (status.current_count() != 0)

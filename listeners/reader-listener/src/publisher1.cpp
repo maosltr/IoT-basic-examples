@@ -48,6 +48,8 @@ int main()
             writer.write(msg);
             std::thread::id this_id = std::this_thread::get_id();
             std::cout << "=== [Publisher] " << this_id << std::endl;
+            std::cout << "=== [Publisher] " << getpid() << std::endl;
+
             counter++;
             std::this_thread::sleep_for(std::chrono::milliseconds(3000));
         }

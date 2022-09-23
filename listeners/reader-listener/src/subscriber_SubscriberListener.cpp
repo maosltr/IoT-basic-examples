@@ -92,6 +92,8 @@ int main()
                         std::thread::id this_id = std::this_thread::get_id();
 
                         std::cout << "=== [Subscriber] " << this_id << std::endl;
+                        std::cout << "=== [Subscriber] " << getpid() << std::endl;
+
 
                         topics_counter++;
                     }
