@@ -25,40 +25,10 @@
 using namespace org::eclipse::cyclonedds;
 using namespace std;
 
-int Subscriber_subscriber_listener::subscribe()
+int Subscriber_data_reader_listener::subscribe()
 {
     try
     {
-        // std::cout << "=== [Subscriber] Create reader." << std::endl;
-
-        // /* First, a domain participant is needed.
-        //  * Create one on the default domain. */
-        // dds::domain::DomainParticipant participant(domain::default_id());
-
-        // /* To subscribe to something, a topic is needed. */
-        // dds::topic::Topic<HelloWorldData::Msg> topic(participant, "random_world");
-
-        // /* create a listener */
-        // SubListener sublistener;
-
-        // /* a Mask is needed for the datareader listener */
-        // // (source: ..\include\ddscxx\dds\core\status\State.hpp)
-        // dds::core::status::StatusMask mask;
-        // mask << dds::core::status::StatusMask::subscription_matched();
-        // // mask << dds::core::status::StatusMask::data_available();
-        // // mask << dds::core::status::StatusMask::all();
-
-        // /* A reader also needs a subscriber. */
-        // dds::sub::Subscriber subscriber(participant,
-        //                                 participant.default_subscriber_qos(),
-        //                                 &sublistener,
-        //                                 mask);
-
-        // /* Now, the reader can be created to subscribe to a HelloWorld message. */
-        // dds::sub::DataReader<HelloWorldData::Msg> reader(subscriber, topic);
-
-
-
 
         auto reader = *reader_;
 
@@ -70,7 +40,6 @@ int Subscriber_subscriber_listener::subscribe()
 
             /* Try taking samples from the reader. */
             samples = reader.take();
-            // sublistener.data_available = false;
 
             dds::sub::LoanedSamples<HelloWorldData::Msg>::const_iterator it;
             for (it = samples.begin(); it != samples.end(); ++it)
@@ -84,9 +53,10 @@ int Subscriber_subscriber_listener::subscribe()
                     // Use sample data and meta information.
 
                     std::thread::id this_id = std::this_thread::get_id();
-                    std::cout << "== [Application3" << "/s" << msg.counter() << "] | " << msg.message() << " | " << getpid() << "/" << this_id << std::endl;
+                    std::cout << "== [swc4" << "/s" << msg.counter() << "] | " << msg.message() << " | " << getpid() << "/" << this_id << std::endl;
 
-
+                    // std::cout << "=== [Subscriber] read sample " << msg.counter()
+                    //           << " (" << msg.userID() << ", " + msg.message() << ")" << std::endl;
                     topics_counter++;
                 }
             }
@@ -107,12 +77,13 @@ int Subscriber_subscriber_listener::subscribe()
     std::cout << "=== [Subscriber] Done." << std::endl;
 
     return EXIT_SUCCESS;
-};
+}
 
 int main()
 {
-    Subscriber_subscriber_listener application3;
-    application3.init();
-    application3.subscribe();
+
+    Subscriber_data_reader_listener swc4;
+    swc4.init();
+    swc4.subscribe();
     return 0;
 }

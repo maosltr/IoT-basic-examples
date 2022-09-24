@@ -87,7 +87,7 @@ public:
         if (status.total_count_change() == 1)
         {
 
-            cout << "=== [Publisher - publisher listener] subscriber joined for the topic '" << topic_name << "'" << endl;
+            cout << "=== [Publisher - publisher listener] subscriber joined for the topic <<'" << topic_name << "'>>" << endl;
             pubmatched = true;
         }
         else if (status.total_count_change() == 0)
@@ -142,7 +142,7 @@ public:
         if (status.total_count_change() == 1)
         {
 
-            cout << "=== [Publisher - domain participant listener] subscriber joined for the topic '" << topic_name << "'" << endl;
+            cout << "=== [Publisher - domain participant listener] subscriber joined for the topic <<'" << topic_name << "'>>" << endl;
             pubmatched = true;
         }
         else if (status.total_count_change() == 0)
@@ -259,13 +259,13 @@ public:
         if (status.current_count_change() == 1)
         {
 
-            cout << "== [DR-Listener] New publisher joined | " << topic_name << endl;
+            cout << "== [DR-Listener] New publisher joined <<" << topic_name << ">>" << endl;
             cout << "== [DR-Listener] " << getpid() << "/" << this_id << endl;
         }
         else if (status.current_count_change() == -1)
         {
 
-            cout << "== [DR-Listener] One publisher left | " << topic_name << endl;
+            cout << "== [DR-Listener] One publisher left <<" << topic_name << ">>" << endl;
             cout << "== [DR-Listener] " << getpid() << "/" << this_id << endl;
         }
     }
@@ -327,13 +327,13 @@ public:
         if (status.current_count_change() == 1)
         {
 
-            cout << "== [S-Listener] New publisher joined | " << topic_name << endl;
+            cout << "== [S-Listener] New publisher joined <<" << topic_name << ">>" << endl;
             cout << "== [S-Listener] " << getpid() << "/" << this_id << endl;
         }
         else if (status.current_count_change() == -1)
         {
 
-            cout << "== [S-Listener] One publisher left | " << topic_name << endl;
+            cout << "== [S-Listener] One publisher left <<" << topic_name << ">>" << endl;
             cout << "== [S-Listener] " << getpid() << "/" << this_id << endl;
         }
     }

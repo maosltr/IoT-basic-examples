@@ -25,11 +25,12 @@ int Publisher::publish()
       
         // pick a random message to publish
 
+        
         std::fstream myFile;
         myFile.open("../data/words.txt");
 
         int counter = 1;
-        const int userID = 1;
+        const int userID = 2;
         bool publish = true;
         while (publish && counter != 20)
         {
@@ -40,14 +41,16 @@ int Publisher::publish()
             HelloWorldData::Msg msg(userID, message, counter);
 
             /* Write the message. */
-            std::cout << "=== [Publisher] Write sample " << counter << " (" << userID << ", " << message << ")" << std::endl;
-            writer.write(msg);
             std::thread::id this_id = std::this_thread::get_id();
-            std::cout << "=== [Publisher] " << this_id << std::endl;
-            std::cout << "=== [Publisher] " << getpid() << std::endl;
+            std::cout << "== [swc" << userID <<
+            "/s"  << counter << 
+            "] | " << message << " | " <<
+            getpid() << "/" << this_id << std::endl;
+
+            writer.write(msg);
 
             counter++;
-            std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+            std::this_thread::sleep_for(std::chrono::milliseconds(2500));
         }
     }
 
@@ -59,14 +62,13 @@ int Publisher::publish()
     std::cout << "=== [Publisher] Done." << std::endl;
 
     return EXIT_SUCCESS;
-
 }
 
 int main()
 {
-    Publisher application1;
-    application1.init();
-    application1.publish();
+    Publisher swc2;
+    swc2.init();
+    swc2.publish();
     return 0;
     
 }
