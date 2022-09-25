@@ -43,7 +43,7 @@ int Publisher2::publish()
             /* Write the message. */
             std::thread::id this_id = std::this_thread::get_id();
             std::cout << "== [swc" << userID <<
-            "/s"  << counter << 
+            "-s"  << counter << 
             "] | " << message << " | " <<
             getpid() << "/" << this_id << std::endl;
 
