@@ -84,8 +84,10 @@ int Subscriber_subscriber_listener::subscribe()
                     // Use sample data and meta information.
 
                     std::thread::id this_id = std::this_thread::get_id();
-                    std::cout << "== [swc3" << "/s" << msg.counter() << "] | " << msg.message() << " | " << getpid() << "/" << this_id << std::endl;
-
+                    std::cout << "== [swc3/swc" << msg.userID()  << "/s" << msg.counter() << "] | " << msg.message() << " | " << getpid() << "/" << this_id << std::endl;
+                    
+                    // simulating a network load resulting in missing a published topic
+                    std::this_thread::sleep_for(std::chrono::milliseconds(2000));
 
                     topics_counter++;
                 }
@@ -113,6 +115,7 @@ int main()
 {
     Subscriber_subscriber_listener swc3;
     swc3.init();
+   
     swc3.subscribe();
     return 0;
 }

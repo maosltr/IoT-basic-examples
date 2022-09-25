@@ -13,7 +13,7 @@ std::string random_message(std::string dict)
     myFile.open(dict);
     srand(time(NULL));
 
-    int randomline = 1 + (rand() % 450000);
+    int randomline = 1 + (rand() % 22000);
     
     
     int linenumber = 0;

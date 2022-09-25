@@ -18,34 +18,33 @@ endif()
 
 idlcxx_generate(TARGET data FILES data/Data.idl WARNINGS no-implicit-extensibility)
 
-add_executable(swc4_sub src/swc4_sub.cpp)
-#add_executable(subscriber_Dpl src/subscriber_DomainParticipantListener.cpp)
-add_executable(swc3_sub src/swc3_sub.cpp)
+#add_executable(init src/init.cpp)
 add_executable(swc1_pub src/swc1_pub.cpp)
 add_executable(swc2_pub src/swc2_pub.cpp)
-
+add_executable(swc3_sub src/swc3_sub.cpp)
+add_executable(swc4_sub src/swc4_sub.cpp)
 
 # Link both executables to idl data type library and ddscxx.
-target_link_libraries(swc4_sub CycloneDDS-CXX::ddscxx data)
-#target_link_libraries(subscriber_Dpl CycloneDDS-CXX::ddscxx data)
-target_link_libraries(swc3_sub CycloneDDS-CXX::ddscxx data)
+#target_link_libraries(init CycloneDDS-CXX::ddscxx data)
 target_link_libraries(swc1_pub CycloneDDS-CXX::ddscxx data)
 target_link_libraries(swc2_pub CycloneDDS-CXX::ddscxx data)
+target_link_libraries(swc3_sub CycloneDDS-CXX::ddscxx data)
+target_link_libraries(swc4_sub CycloneDDS-CXX::ddscxx data)
 
 # Disable the static analyzer in GCC to avoid crashing the GNU C++ compiler
 # on Azure Pipelines
 if(DEFINED ENV{SYSTEM_TEAMFOUNDATIONSERVERURI})
   if(CMAKE_C_COMPILER_ID STREQUAL "GNU" AND ANALYZER STREQUAL "on")
-    target_compile_options(swc4_sub PRIVATE -fno-analyzer)
-    #target_compile_options(subscriber_Dpl PRIVATE -fno-analyzer)
-    target_compile_options(swc3_sub PRIVATE -fno-analyzer)
-    target_compile_options(swc1_pub PRIVATE -fno-analyzer)
-    target_compile_options(swc2_pub PRIVATE -fno-analyzer)
+  #target_compile_options(init PRIVATE -fno-analyzer)
+  target_compile_options(swc1_pub PRIVATE -fno-analyzer)
+  target_compile_options(swc2_pub PRIVATE -fno-analyzer)
+  target_compile_options(swc3_sub PRIVATE -fno-analyzer)
+  target_compile_options(swc4_sub PRIVATE -fno-analyzer)
   endif()
 endif()
 
-set_property(TARGET swc4_sub PROPERTY CXX_STANDARD ${cyclonedds_cpp_std_to_use})
-#set_property(TARGET subscriber_Dpl PROPERTY CXX_STANDARD ${cyclonedds_cpp_std_to_use})
-set_property(TARGET swc3_sub PROPERTY CXX_STANDARD ${cyclonedds_cpp_std_to_use})
+#set_property(TARGET init PROPERTY CXX_STANDARD ${cyclonedds_cpp_std_to_use})
 set_property(TARGET swc1_pub PROPERTY CXX_STANDARD ${cyclonedds_cpp_std_to_use})
 set_property(TARGET swc2_pub PROPERTY CXX_STANDARD ${cyclonedds_cpp_std_to_use})
+set_property(TARGET swc3_sub PROPERTY CXX_STANDARD ${cyclonedds_cpp_std_to_use})
+set_property(TARGET swc4_sub PROPERTY CXX_STANDARD ${cyclonedds_cpp_std_to_use})

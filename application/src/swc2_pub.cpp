@@ -17,7 +17,7 @@
 using namespace org::eclipse::cyclonedds;
 using namespace std;
 
-int Publisher::publish()
+int Publisher2::publish()
 {
     try
     {
@@ -27,15 +27,15 @@ int Publisher::publish()
 
         
         std::fstream myFile;
-        myFile.open("../data/words.txt");
+        myFile.open("../data/words_fr.txt");
 
         int counter = 1;
         const int userID = 2;
         bool publish = true;
-        while (publish && counter != 20)
+        while (publish && counter != 50)
         {
             // pick a random message to publish
-            std::string message = random_message("../data/words.txt");
+            std::string message = random_message("../data/words_fr.txt");
 
             /* Create a message to write. */
             HelloWorldData::Msg msg(userID, message, counter);
@@ -50,7 +50,7 @@ int Publisher::publish()
             writer.write(msg);
 
             counter++;
-            std::this_thread::sleep_for(std::chrono::milliseconds(2500));
+            std::this_thread::sleep_for(std::chrono::milliseconds(2000));
         }
     }
 
@@ -66,8 +66,8 @@ int Publisher::publish()
 
 int main()
 {
-    Publisher swc2;
-    swc2.init();
+    Publisher2 swc2;
+    swc2.init();   
     swc2.publish();
     return 0;
     

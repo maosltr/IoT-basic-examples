@@ -17,7 +17,7 @@
 using namespace org::eclipse::cyclonedds;
 using namespace std;
 
-int Publisher::publish()
+int Publisher1::publish()
 {
     try
     {
@@ -31,7 +31,7 @@ int Publisher::publish()
         int counter = 1;
         const int userID = 1;
         bool publish = true;
-        while (publish && counter != 20)
+        while (publish && counter != 50)
         {
             // pick a random message to publish
             std::string message = random_message("../data/words.txt");
@@ -50,7 +50,7 @@ int Publisher::publish()
 
 
             counter++;
-            std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+            std::this_thread::sleep_for(std::chrono::milliseconds(2000));
         }
     }
 
@@ -67,7 +67,8 @@ int Publisher::publish()
 
 int main()
 {
-    Publisher swc1;
+    Publisher1 swc1;
+    
     swc1.init();
     swc1.publish();
     return 0;
