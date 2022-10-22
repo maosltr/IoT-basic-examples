@@ -3,6 +3,7 @@
 #include <chrono>
 #include <thread>
 #include <fstream>
+#include <ctime>
 #include <string>
 #include <algorithm>
 /* Include the C++ DDS API. */
@@ -11,46 +12,51 @@
 /* Include data type and specific traits to be used with the C++ DDS API. */
 #include "Data.hpp"
 #include "init.hpp"
-
 #include "myFunctions.hpp"
 
 using namespace org::eclipse::cyclonedds;
 using namespace std;
 
-int Publisher1::publish()
+int Publisher2::publish()
 {
     try
     {
         auto writer = *writer_;
-      
+
         // pick a random message to publish
 
         std::fstream myFile;
-        myFile.open("../data/words.txt");
+        myFile.open("../data/words_fr.txt");
 
         int counter = 1;
-        const int userID = 1;
+        const int userID = 2;
         bool publish = true;
+        std::ofstream myfile;
+        
+
         while (publish && counter != 50)
         {
             // pick a random message to publish
-            std::string message = random_message("../data/words.txt");
+            std::string message = random_message("../data/words_fr.txt");
 
             /* Create a message to write. */
             HelloWorldData::Msg msg(userID, message, counter);
 
             /* Write the message. */
             std::thread::id this_id = std::this_thread::get_id();
-            std::cout << "== [swc" << userID <<
-            "-s"  << counter << 
-            "] | " << message << " | " <<
-            getpid() << "/" << this_id << std::endl;
+            std::cout << "== [node" << userID << "-s" << counter << "] | " << message << " | " << getpid() << "/" << this_id << std::endl;
 
             writer.write(msg);
 
+            // log
+            std::time_t ts = std::time(nullptr);
 
-            counter++;
+            myfile.open("../logs/node2_log.csv", std::ios_base::app);
+            myfile << ts << "," << counter << ",0\n";
+            myfile.close();
+
             std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+            counter++;
         }
     }
 
@@ -62,15 +68,12 @@ int Publisher1::publish()
     std::cout << "=== [Publisher] Done." << std::endl;
 
     return EXIT_SUCCESS;
-
 }
 
 int main()
 {
-    Publisher1 swc1;
-    
-    swc1.init();
-    swc1.publish();
+    Publisher2 swc2;
+    swc2.init();
+    swc2.publish();
     return 0;
-    
 }

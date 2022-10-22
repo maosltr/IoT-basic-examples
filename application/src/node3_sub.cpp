@@ -13,6 +13,8 @@
 #include <iostream>
 #include <chrono>
 #include <thread>
+#include <fstream>
+#include <ctime>
 
 /* Include the C++ DDS API. */
 #include "dds/dds.hpp"
@@ -57,12 +59,10 @@ int Subscriber_subscriber_listener::subscribe()
         // /* Now, the reader can be created to subscribe to a HelloWorld message. */
         // dds::sub::DataReader<HelloWorldData::Msg> reader(subscriber, topic);
 
-
-
-
         auto reader = *reader_;
 
-        int topics_counter = 0;
+        int topics_counter = 1;
+        
         while (topics_counter < 100)
         {
 
@@ -84,11 +84,17 @@ int Subscriber_subscriber_listener::subscribe()
                     // Use sample data and meta information.
 
                     std::thread::id this_id = std::this_thread::get_id();
-                    std::cout << "== [swc3/swc" << msg.userID()  << "-s" << msg.counter() << "] | " << msg.message() << " | " << getpid() << "/" << this_id << std::endl;
-                    
+                    std::cout << "== [node3/swc" << msg.userID() << "-s" << msg.counter() << "] | " << msg.message() << " | " << getpid() << "/" << this_id << std::endl;
+
+                    // log
+                    std::time_t ts = std::time(nullptr);
+                    std::ofstream myfile;
+                    myfile.open("../logs/node3_log.csv", std::ios_base::app);
+                    myfile << ts << "," << topics_counter << ",0\n";
+                    myfile.close();
+
                     // simulating a network load resulting in missing a published topic
                     std::this_thread::sleep_for(std::chrono::milliseconds(2000));
-
                     topics_counter++;
                 }
             }
@@ -115,7 +121,7 @@ int main()
 {
     Subscriber_subscriber_listener swc3;
     swc3.init();
-   
+
     swc3.subscribe();
     return 0;
 }

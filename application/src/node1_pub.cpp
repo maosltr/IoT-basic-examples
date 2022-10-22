@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <chrono>
+#include <ctime>
 #include <thread>
 #include <fstream>
 #include <string>
@@ -11,46 +12,48 @@
 /* Include data type and specific traits to be used with the C++ DDS API. */
 #include "Data.hpp"
 #include "init.hpp"
-
 #include "myFunctions.hpp"
 
 using namespace org::eclipse::cyclonedds;
 using namespace std;
 
-int Publisher2::publish()
+int Publisher1::publish()
 {
     try
     {
         auto writer = *writer_;
-      
+
         // pick a random message to publish
 
-        
         std::fstream myFile;
-        myFile.open("../data/words_fr.txt");
+        myFile.open("../data/words.txt");
 
         int counter = 1;
-        const int userID = 2;
+        const int userID = 1;
         bool publish = true;
         while (publish && counter != 50)
         {
             // pick a random message to publish
-            std::string message = random_message("../data/words_fr.txt");
+            std::string message = random_message("../data/words.txt");
 
             /* Create a message to write. */
             HelloWorldData::Msg msg(userID, message, counter);
 
             /* Write the message. */
             std::thread::id this_id = std::this_thread::get_id();
-            std::cout << "== [swc" << userID <<
-            "-s"  << counter << 
-            "] | " << message << " | " <<
-            getpid() << "/" << this_id << std::endl;
+            std::cout << "== [node" << userID << "-s" << counter << "] | " << message << " | " << getpid() << "/" << this_id << std::endl;
 
             writer.write(msg);
 
-            counter++;
+            // log
+            std::time_t ts = std::time(nullptr);
+            std::ofstream myfile;
+            myfile.open("../logs/node1_log.csv", std::ios_base::app);
+            myfile << ts << "," << counter << ",0\n";
+            myfile.close();
+
             std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+            counter++;
         }
     }
 
@@ -66,9 +69,9 @@ int Publisher2::publish()
 
 int main()
 {
-    Publisher2 swc2;
-    swc2.init();   
-    swc2.publish();
+    Publisher1 swc1;
+
+    swc1.init();
+    swc1.publish();
     return 0;
-    
 }

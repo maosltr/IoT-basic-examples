@@ -12,6 +12,8 @@
 #include <cstdlib>
 #include <iostream>
 #include <chrono>
+#include <ctime>
+#include <fstream>
 #include <thread>
 
 /* Include the C++ DDS API. */
@@ -32,7 +34,7 @@ int Subscriber_data_reader_listener::subscribe()
 
         auto reader = *reader_;
 
-        int topics_counter = 0;
+        int topics_counter = 1;
         while (topics_counter < 100)
         {
 
@@ -53,7 +55,14 @@ int Subscriber_data_reader_listener::subscribe()
                     // Use sample data and meta information.
 
                     std::thread::id this_id = std::this_thread::get_id();
-                    std::cout << "== [swc4/swc" << msg.userID()  << "-s" << msg.counter() << "] | " << msg.message() << " | " << getpid() << "/" << this_id << std::endl;
+                    std::cout << "== [node4/node" << msg.userID() << "-s" << msg.counter() << "] | " << msg.message() << " | " << getpid() << "/" << this_id << std::endl;
+
+                    // log
+                    std::time_t ts = std::time(nullptr);
+                    std::ofstream myfile;
+                    myfile.open("../logs/node4_log.csv", std::ios_base::app);
+                    myfile << ts << "," << topics_counter << ",0\n";
+                    myfile.close();
 
                     // simulating a network load resulting in missing a published topic
                     std::this_thread::sleep_for(std::chrono::milliseconds(2000));
